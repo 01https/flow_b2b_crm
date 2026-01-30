@@ -22,7 +22,7 @@ class ClientViewSet(viewsets.ModelViewSet):
         try:
             client = Client.all_objects.get(pk=pk)
             
-            if not client.deleted:  # перевірка (опціонально)
+            if not client.deleted:
                 return Response(
                     {"error": "Client not in archive"}, 
                     status=status.HTTP_400_BAD_REQUEST
