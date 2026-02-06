@@ -1,8 +1,8 @@
 from django.db import models
 from safedelete.models import SafeDeleteModel, SOFT_DELETE
 
-from ..business.models import Business
-from ..products.models import Product
+from business.models import Business
+from products.models import Product
 
 
 class Client(SafeDeleteModel):

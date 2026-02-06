@@ -2,7 +2,7 @@ from django.db import models
 from django.core.validators import MinValueValidator
 from safedelete.models import SafeDeleteModel, SOFT_DELETE
 
-from ..business.models import Business
+from business.models import Business
 
 
 class Product(SafeDeleteModel):
