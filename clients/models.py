@@ -1,6 +1,9 @@
 from django.db import models
 from safedelete.models import SafeDeleteModel, SOFT_DELETE
 
+from ..business.models import Business
+from ..products.models import Product
+
 
 class Client(SafeDeleteModel):
     """Model of clients for Kanban, Clients(Table), Client Details"""
@@ -24,6 +27,9 @@ class Client(SafeDeleteModel):
     comment = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    business = models.ForeignKey(Business, on_delete=models.PROTECT, related_name="clients")
+    product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name="clients", null=True, blank=True)
 
     def __str__(self):
         return f"{self.first_name}, {self.last_name}"
