@@ -29,7 +29,11 @@ class Client(SafeDeleteModel):
     updated_at = models.DateTimeField(auto_now=True)
     
     business = models.ForeignKey(Business, on_delete=models.PROTECT, related_name="clients")
-    product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name="clients", null=True, blank=True)
+    products = models.ManyToManyField(
+        Product,
+        related_name="clients",
+        blank=True
+        )
 
     def __str__(self):
         return f"{self.first_name}, {self.last_name}"
