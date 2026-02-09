@@ -41,6 +41,12 @@ class UserManager(BaseUserManager):
 class User(AbstractUser):
     username = None
     email = models.EmailField(_("email address"), unique=True)
+    
+    avatar = models.ImageField(
+        upload_to="avatars/",
+        default="avatars/default.jpg",
+        blank=True
+        )
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
