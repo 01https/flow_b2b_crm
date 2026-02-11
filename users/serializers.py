@@ -39,6 +39,10 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(validators=[validate_email])
+    first_name = serializers.CharField(validators=[validate_name])
+    last_name = serializers.CharField(validators=[validate_name])
+    
     class Meta:
         model = User
         fields = ["id", "avatar", "email", "first_name", "last_name"]
