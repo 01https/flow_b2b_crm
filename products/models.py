@@ -12,7 +12,8 @@ class Product(SafeDeleteModel):
     
     img = models.ImageField(
         upload_to="products/",
-        default="products/default.png"
+        default="products/default.png",
+        blank=True
         )
     name = models.CharField(max_length=100)
     price = models.DecimalField(
