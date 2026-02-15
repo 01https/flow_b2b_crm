@@ -14,7 +14,7 @@ class Business(models.Model):
     
     owner = models.OneToOneField(
         User,
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
         related_name="owned_business"
     )
 
