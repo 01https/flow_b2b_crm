@@ -18,10 +18,12 @@ class Business(models.Model):
         related_name="owned_business"
     )
     
-    members = models.ManyToManyField(
+    members = models.ForeignKey(
         User,
-        related_name="managed_businesses",
-        blank=True
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="managed_business"
     )
     
     def __str__(self):
