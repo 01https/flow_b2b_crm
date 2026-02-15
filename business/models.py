@@ -17,14 +17,6 @@ class Business(models.Model):
         on_delete=models.CASCADE,
         related_name="owned_business"
     )
-    
-    members = models.ForeignKey(
-        User,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name="managed_business"
-    )
-    
+
     def __str__(self):
         return self.name

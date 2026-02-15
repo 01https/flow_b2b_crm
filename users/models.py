@@ -42,6 +42,14 @@ class User(AbstractUser):
     username = None
     email = models.EmailField(_("email address"), unique=True)
     
+    business = models.ForeignKey(
+        'business.Business',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="members"
+    )
+    
     avatar = models.ImageField(
         upload_to="avatars/",
         default="avatars/default.jpg",

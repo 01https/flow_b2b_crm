@@ -15,7 +15,7 @@ class ClientViewSet(viewsets.ModelViewSet):
     def get_user_business(user):
         if hasattr(user, 'owned_business'):
             return user.owned_business
-        return user.managed_business
+        return user.business
 
     def get_queryset(self):
         business = self.get_user_business(self.request.user)
