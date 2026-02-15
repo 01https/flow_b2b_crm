@@ -10,7 +10,10 @@ class Product(SafeDeleteModel):
     
     _safedelete_policy = SOFT_DELETE
     
-    img = models.ImageField(upload_to="products/")
+    img = models.ImageField(
+        upload_to="products/",
+        default="products/default.png"
+        )
     name = models.CharField(max_length=100)
     price = models.DecimalField(
         max_digits=10,
