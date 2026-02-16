@@ -4,6 +4,11 @@ from users.models import User
 
 
 class Business(models.Model):
+    img = models.ImageField(
+        upload_to="businesses/",
+        default="businesses/default.png",
+        blank=True
+    )
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=50)
     email = models.EmailField()
