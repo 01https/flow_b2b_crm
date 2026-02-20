@@ -37,3 +37,13 @@ class Client(SafeDeleteModel):
 
     def __str__(self):
         return f"{self.first_name}, {self.last_name}"
+
+
+class Note(SafeDeleteModel):
+    _safedelete_policy = SOFT_DELETE
+    
+    description = models.TextField()
+    client = models.ForeignKey(Client, on_delete=models.PROTECT, related_name="notes")
+    
+    def __str__(self):
+        return self.description
