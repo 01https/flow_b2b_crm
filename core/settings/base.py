@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_filters',
+    'drf_spectacular',
     'safedelete',
     'rest_framework',
     'rest_framework_simplejwt',
@@ -39,6 +40,27 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend',
     ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "FROW B2B CRM API",
+    "VERSION": "1.0.0",
+    "DESCRIPTION": "API documentation for frontend team",
+    "COMPONENT_SPLIT_REQUEST": True,
+
+    "SECURITY": [{"cookieAuth": []}],
+    "COMPONENTS": {
+        "securitySchemes": {
+            "cookieAuth": {
+                "type": "apiKey",
+                "in": "cookie",
+                "name": "access",
+            }
+        }
+    },
+
+    "SERVE_INCLUDE_SCHEMA": False,
 }
 
 SIMPLE_JWT = {
