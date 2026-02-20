@@ -1,21 +1,24 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.exceptions import ValidationError
+
+from .models import Client, Note
+from .serializers import ClientReadSerializer, ClientDetailSerializer, NoteSerializer
 
 
-from .models import Client
-from .serializers import ClientReadSerializer, ClientDetailSerializer
-
-
-class ClientViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]
-
+class BusinessBoundMixin:
     @staticmethod
     def get_user_business(user):
-        if hasattr(user, 'owned_business'):
+        if hasattr(user, "owned_business"):
             return user.owned_business
         return user.business
+
+
+class ClientViewSet(BusinessBoundMixin, viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         business = self.get_user_business(self.request.user)
@@ -59,3 +62,26 @@ class ClientViewSet(viewsets.ModelViewSet):
                 {"error": "Client not found"},
                 status=status.HTTP_404_NOT_FOUND
             )
+
+
+class NoteViewSet(BusinessBoundMixin, viewsets.ModelViewSet):
+    serializer_class = NoteSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        business = self.get_user_business(self.request.user)
+        queryset = Note.objects.select_related("client").filter(client__business=business)
+        client_id = self.request.query_params.get("client")
+        if client_id:
+            queryset = queryset.filter(client_id=client_id)
+        return queryset.order_by("-id")
+    
+    def perform_create(self, serializer):
+        business = self.get_user_business(self.request.user)
+        client_id = self.request.query_params.get("client")
+        if not client_id:
+            raise ValidationError({"client": "client query param is required"})
+        
+        client = get_object_or_404(Client, pk=client_id, business=business)
+        
+        serializer.save(client=client)
