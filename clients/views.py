@@ -4,17 +4,19 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import ValidationError
+from django.core.exceptions import ObjectDoesNotExist
 
 from .models import Client, Note
 from .serializers import ClientReadSerializer, ClientDetailSerializer, NoteSerializer
 
 
 class BusinessBoundMixin:
-    @staticmethod
-    def get_user_business(user):
-        if hasattr(user, "owned_business"):
+    def get_user_business(self, user=None):
+        user = user or self.request.user
+        try:
             return user.owned_business
-        return user.business
+        except ObjectDoesNotExist:
+            raise ValidationError({"business": "Create a business first."})
 
 
 class ClientViewSet(BusinessBoundMixin, viewsets.ModelViewSet):
